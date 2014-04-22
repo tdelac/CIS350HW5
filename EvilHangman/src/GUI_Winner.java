@@ -1,42 +1,19 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import javax.sound.sampled.*;
 
-public class GUI_Winner implements ActionListener
-{
-    private JFrame parentFrame;
-    private JFrame congratulationsFrame;
-    private JLabel answerLabel;
-    private JLabel secretWordLabel;
-    private JLabel gameResultLabel;
-    private JButton returnBtn;
+public class GUI_Winner extends GUI_EndScreen{
+    private static JFrame congratulationsFrame = new JFrame("You are the winner!!!");;
     private ImageIcon background;
     private JPanel imagePanel;
+    private static JLabel secretWordLabel = new JLabel();
     
-    public GUI_Winner(String Letters,JFrame frame)
-    {
-        parentFrame = frame;
-        congratulationsFrame = new JFrame("You are the winner!!!");
+    public GUI_Winner(String Letters,JFrame frame){
+    	super(Letters, secretWordLabel, "You are the winner!!!", frame, congratulationsFrame);
         bg(congratulationsFrame);
-        answerLabel = new JLabel("The answer is ");
-        
-        secretWordLabel = new JLabel(Letters);
         secretWordLabel.setFont(new Font("Default",Font.PLAIN,23));
         secretWordLabel.setForeground(Color.red);
-        gameResultLabel = new JLabel("You are winner!");
-        returnBtn = new JButton("Return to the main menu");
-
-        returnBtn.addActionListener(this); 
-        
-        congratulationsFrame.add(answerLabel);
-        congratulationsFrame.add(secretWordLabel);
-        congratulationsFrame.add(gameResultLabel);
-        congratulationsFrame.add(returnBtn);
 
         congratulationsFrame.setVisible(true);
-
     }
 
     public void bg(JFrame frame)
@@ -59,12 +36,5 @@ public class GUI_Winner implements ActionListener
         frame.setSize(background.getIconWidth(), background.getIconHeight());
         frame.setResizable(false);
 
-    }
-
-    public void actionPerformed(ActionEvent e)
-    {
-        congratulationsFrame.dispose();
-        parentFrame.dispose();
-    	new Start().createAndShowGUI();
     }
 }
