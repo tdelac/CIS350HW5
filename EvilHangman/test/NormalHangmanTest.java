@@ -1,6 +1,8 @@
 
 import static org.junit.Assert.*;
 
+import java.util.HashSet;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,7 +14,7 @@ public class NormalHangmanTest {
 
 	@Before
 	public void setUp() throws Exception {
-		hm = new NormalHangMan(WORD, 8, "");
+		hm = new NormalHangMan(WORD, 8, new HashSet<Character>());
 	}
 	
 	@Test
@@ -22,7 +24,7 @@ public class NormalHangmanTest {
 		assertEquals(8, hm.numGuessesRemaining());
 		assertEquals(7, hm.numLettersRemaining()); // because the word has 7 distinct letters
 		assertEquals("_ _ _ _ _ _ _ _ _ ", hm.displayGameState());
-		assertEquals("", hm.lettersGuessed());
+		assertTrue(hm.lettersGuessed().size() == 0);
 		assertFalse(hm.gameOver());
 	}
 
@@ -35,10 +37,26 @@ public class NormalHangmanTest {
 		assertEquals(8, hm.numGuessesRemaining());
 		assertEquals(6, hm.numLettersRemaining());
 		assertEquals("S _ _ _ _ _ _ _ _ ", hm.displayGameState());
-		assertEquals("S", hm.lettersGuessed());
+		assertTrue(hm.lettersGuessed().contains('S'));
 		assertFalse(hm.gameOver());
 	}
 	
+	//Test for update state, correct guess
+	@Test
+	public void testCorrectGuessUpdateState(){
+		hm.setGuess('G');
+		assertTrue(hm.updateState());
+		assertEquals("_ _ _ _ G _ _ _ _ ", hm.displayGameState());
+	}
+
+	//Test for update state, incorrect guess
+	@Test
+	public void testInCorrectGuessUpdateState(){
+		hm.setGuess('Z');
+		assertFalse(hm.updateState());
+		assertEquals("_ _ _ _ _ _ _ _ _ ", hm.displayGameState());
+	}
+
 	@Test
 	public void testCorrectGuess2() {
 		// make a correct guess and see if everything is updated
@@ -48,7 +66,7 @@ public class NormalHangmanTest {
 		assertEquals(8, hm.numGuessesRemaining());
 		assertEquals(6, hm.numLettersRemaining());
 		assertEquals("_ _ O _ _ _ _ O _ ", hm.displayGameState());
-		assertEquals("O", hm.lettersGuessed());
+		assertTrue(hm.lettersGuessed().contains('O'));
 		assertFalse(hm.gameOver());
 	}
 
@@ -63,7 +81,8 @@ public class NormalHangmanTest {
 		assertEquals(8, hm.numGuessesRemaining());
 		assertEquals(5, hm.numLettersRemaining());
 		assertEquals("S P _ _ _ _ _ _ _ ", hm.displayGameState());
-		assertEquals("SP", hm.lettersGuessed());
+		assertTrue(hm.lettersGuessed().contains('S'));
+		assertTrue(hm.lettersGuessed().contains('P'));
 		assertFalse(hm.gameOver());
 	}
 	
@@ -76,7 +95,7 @@ public class NormalHangmanTest {
 		assertEquals(7, hm.numGuessesRemaining());
 		assertEquals(7, hm.numLettersRemaining());
 		assertEquals("_ _ _ _ _ _ _ _ _ ", hm.displayGameState());
-		assertEquals("K", hm.lettersGuessed());
+		assertTrue(hm.lettersGuessed().contains('K'));
 		assertFalse(hm.gameOver());
 	}
 	
@@ -91,7 +110,8 @@ public class NormalHangmanTest {
 		assertEquals(6, hm.numGuessesRemaining());
 		assertEquals(7, hm.numLettersRemaining());
 		assertEquals("_ _ _ _ _ _ _ _ _ ", hm.displayGameState());
-		assertEquals("KT", hm.lettersGuessed());
+		assertTrue(hm.lettersGuessed().contains('K'));
+		assertTrue(hm.lettersGuessed().contains('T'));
 		assertFalse(hm.gameOver());
 	}
 	
@@ -110,7 +130,10 @@ public class NormalHangmanTest {
 		assertEquals(6, hm.numGuessesRemaining());
 		assertEquals(5, hm.numLettersRemaining());
 		assertEquals("S P _ _ _ _ _ _ _ ", hm.displayGameState());
-		assertEquals("STPK", hm.lettersGuessed());
+		assertTrue(hm.lettersGuessed().contains('S'));
+		assertTrue(hm.lettersGuessed().contains('T'));
+		assertTrue(hm.lettersGuessed().contains('P'));
+		assertTrue(hm.lettersGuessed().contains('K'));
 		assertFalse(hm.gameOver());
 	}
 	
@@ -120,7 +143,7 @@ public class NormalHangmanTest {
 		assertFalse(correct);
 		assertEquals(8, hm.numGuessesRemaining());
 		assertEquals("_ _ _ _ _ _ _ _ _ ", hm.displayGameState());
-		assertEquals("", hm.lettersGuessed());
+		assertTrue(hm.lettersGuessed().size() == 0);
 		assertFalse(hm.gameOver());
 	}
 
@@ -133,7 +156,7 @@ public class NormalHangmanTest {
 		
 		assertEquals(8, hm.numGuessesRemaining());
 		assertEquals("S _ _ _ _ _ _ _ _ ", hm.displayGameState());
-		assertEquals("S", hm.lettersGuessed());
+		assertTrue(hm.lettersGuessed().contains('S'));
 		assertFalse(hm.gameOver());
 	}
 

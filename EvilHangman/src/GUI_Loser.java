@@ -1,20 +1,30 @@
 import javax.swing.*;
+
 import java.awt.*;
 
-
 public class GUI_Loser extends GUI_EndScreen{
-	private static JFrame loserFrame = new JFrame("You are the loser!");
 
-	public GUI_Loser(String Letters, JFrame frame){
-		super(Letters, new JLabel(), "You are the Loser!", frame, loserFrame);
-		loserFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		loserFrame.setSize(new Dimension(300,470));
-		loserFrame.setLayout(new FlowLayout());
-
-		ImageIcon icon = new ImageIcon("loser.gif"); 
-		JLabel loserPic = new JLabel(icon); 
-		
-		loserFrame.add(loserPic);
-		loserFrame.setVisible(true);
-	}
+	public GUI_Loser(String Letters, JFrame frame){  
+        parentFrame = frame;
+        endMessageFrame = new JFrame("You are the loser!");
+        endMessageFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        endMessageFrame.setSize(new Dimension(300,470));
+        endMessageFrame.setLayout(new FlowLayout());
+        
+        secretWordLabel = new JLabel("The answer is "+Letters+".");
+        gameResultLabel = new JLabel("You are the Loser!");
+        returnBtn = new JButton("Return to the main menu");
+        
+        returnBtn.addActionListener(this); 
+        
+        ImageIcon icon = new ImageIcon("loser.gif"); 
+        JLabel loserPic = new JLabel(icon);
+      
+        endMessageFrame.add(secretWordLabel);
+        endMessageFrame.add(gameResultLabel);
+        endMessageFrame.add(returnBtn);
+        endMessageFrame.add(loserPic);
+        
+        endMessageFrame.setVisible(true);
+    }
 }

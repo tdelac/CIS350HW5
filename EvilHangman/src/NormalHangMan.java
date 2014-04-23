@@ -1,3 +1,5 @@
+import java.util.Set;
+
 /**
  * <p>A class that keeps track of the current state of a game of hangman.</p>
  * <p> The class is constructed with a secret word and some number of guesses.</p>
@@ -7,16 +9,9 @@
  * 
  * <p>This class can then be used by a user interface to administer a regular game of Hangman.</p>
  */
-import java.util.*;
-public class NormalHangMan implements HangmanGame
-{
-    
 
-	private String originSecretWord = "";//To store the secret word
-    private int guessesRemaining;//to store the number of guess for the user
-    private int numLettersLeft;//to store the number of the letters in the secret word has not been guessed correctly
-    private String currentState = "";//store the current guessing situation
-    private String history = "";//store the letter user has tried
+public class NormalHangMan extends HangmanGame{
+	
     private char guess;//the letter the user guess right now
 
     /**
@@ -29,8 +24,8 @@ public class NormalHangMan implements HangmanGame
      * @param secretWord the word that the player is trying to guess
      * @param numGuesses the number of guesses allowed
      */
-    public NormalHangMan(String secretWord, int numGuesses, String LetterHistory){
-        originSecretWord = secretWord;
+    public NormalHangMan(String secretWord, int numGuesses, Set<Character> LetterHistory){
+    	this.secretWord = secretWord;
         guessesRemaining = numGuesses;
         numLettersLeft = secretWord.length();
         for(int i = 0; i < secretWord.length(); i++)
@@ -47,76 +42,23 @@ public class NormalHangMan implements HangmanGame
         }
         history = LetterHistory;
     }   
-
-    public String getSecretWord()
-    {
-        return originSecretWord;
+    
+    //for testing purposes
+    public void setGuess(char guess){
+    	this.guess = guess;
     }
-    public int numGuessesRemaining()
-    {
-        return guessesRemaining;
-    }
-    public int numLettersRemaining()
-    {
-        return numLettersLeft;
-    }
-    public boolean isWin()
-    {
-        if (guessesRemaining == 0)
-            return false;//if the user has no chance to guess again, it means the user loses.
-        else
-            return true;
-    }
-    public boolean gameOver()
-    {
-        if (guessesRemaining == 0 || numLettersLeft == 0)
-            return true;
-        else
-            return false;
-    }
-    public String lettersGuessed()
-    {
-        return history;
-    }
-    public String displayGameState()
-    {
-        return currentState;
-    }
+    
     public boolean makeGuess(char ch)
     {
     	if (Character.isLetter(ch) == false) return false;
-        boolean tempB = true;
         guess = ch;
-        for (int i = 0; i < originSecretWord.length(); i++)
-        {
-            if (originSecretWord.charAt(i) == ch)//if the user guess right, adjust the current state.
-            {
-                String temp = "";
-                for (int j = 0; j < originSecretWord.length(); j++)
-                {
-                    if (originSecretWord.charAt(j) == ch)
-                    {
-                        temp = temp + ch + " ";
-                    }
-                    else
-                    {
-                        temp = temp + currentState.charAt(2*j) + currentState.charAt(2*j+1);              
-                    }
-                }
-                currentState = temp;
-                tempB = true;
-                break;
-            }
-            else
-            {
-                tempB = false;
-            }
-        }
+        boolean isInWord = updateState();
+        
         if (!alreadyGuessed(ch))
         {
-            history = history + guess;
+            history.add(guess);
 
-            if (tempB)
+            if (isInWord)
             {
                 numLettersLeft--;
             }
@@ -124,20 +66,28 @@ public class NormalHangMan implements HangmanGame
             {
                 guessesRemaining--;
             }
-            return tempB;
+            return isInWord;
         }
         else return false;
     }
     
-    public boolean alreadyGuessed(char c)
-    {
-    	for (int i = 0; i < history.length(); i++) {
-    		if (history.charAt(i) == c) return true;
-    	}
+    public boolean updateState(){
+    	for (int i = 0; i < secretWord.length(); i++){
+            if (secretWord.charAt(i) == guess){
+                String temp = "";
+                for (int j = 0; j < secretWord.length(); j++){
+                    if (secretWord.charAt(j) == guess){
+                        temp = temp + guess + " ";
+                    }
+                    else {
+                        temp = temp + currentState.charAt(2*j) + currentState.charAt(2*j+1);              
+                    }
+                }
+                currentState = temp;
+                return true;
+            }
+        }
     	return false;
     }
-    
-   
 }
-    
        

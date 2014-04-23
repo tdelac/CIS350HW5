@@ -1,10 +1,6 @@
- 
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.border.*;
-import java.util.*;
-import java.text.SimpleDateFormat;
  
 
 public class Start extends JPanel implements ActionListener {
@@ -83,7 +79,6 @@ public class Start extends JPanel implements ActionListener {
         add(button);
  
         setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
-
     } 
  
     public void actionPerformed(ActionEvent e) {
@@ -91,7 +86,6 @@ public class Start extends JPanel implements ActionListener {
     	numGuesses = (String)(patternList1.getSelectedItem());
     	frame.dispose();
     	new GUI_PlayGame(Integer.parseInt(numLetters), Integer.parseInt(numGuesses)).show();
-
     }
 
  
@@ -117,6 +111,5 @@ public class Start extends JPanel implements ActionListener {
  
     public static void main(String[] args) {
     	createAndShowGUI();
-
     }
 }
